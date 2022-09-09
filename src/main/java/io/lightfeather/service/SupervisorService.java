@@ -13,7 +13,6 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class SupervisorService {
 
-    @Autowired
     RestTemplate restTemplate;
 
     @Value("${supervisor.url}")
@@ -21,6 +20,7 @@ public class SupervisorService {
 
     public ArrayList<String> getSupervisors() {
 
+        restTemplate = new RestTemplate();
         Supervisor[] supervisorList = restTemplate.getForObject(supervisorUrl, Supervisor[].class);
 
         ArrayList<String> processedSupervisorList = new ArrayList<String>();
