@@ -1,4 +1,4 @@
-package io.lightfeather.springtemplate;
+package io.lightfeather;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

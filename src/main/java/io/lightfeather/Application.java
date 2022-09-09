@@ -1,4 +1,4 @@
-package io.lightfeather.springtemplate;
+package io.lightfeather;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
