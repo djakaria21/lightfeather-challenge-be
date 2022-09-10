@@ -4,6 +4,7 @@ import io.lightfeather.entity.Supervisor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,14 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SupervisorService {
 
-    RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Value("${supervisor.url}")
     private String supervisorUrl;
 
     public ArrayList<String> getSupervisors() {
-
-        restTemplate = new RestTemplate();
 
         Supervisor[] supervisorList = restTemplate.getForObject(supervisorUrl, Supervisor[].class);
 
@@ -40,5 +40,10 @@ public class SupervisorService {
         }
 
         return processedSupervisorList;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }

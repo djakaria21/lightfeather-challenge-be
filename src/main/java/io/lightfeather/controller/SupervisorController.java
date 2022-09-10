@@ -15,7 +15,8 @@ import java.util.Collection;
 @RequestMapping(value = "api/supervisors")
 public class SupervisorController {
 
-    private final SupervisorService supervisorService;
+    @Autowired
+    private SupervisorService supervisorService;
 
     @GetMapping
     public ResponseEntity<Collection<String>> getSupervisors() {
