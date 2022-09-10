@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SupervisorService {
 
-    @Autowired
     RestTemplate restTemplate;
 
     @Value("${supervisor.url}")
@@ -21,13 +23,22 @@ public class SupervisorService {
 
     public ArrayList<String> getSupervisors() {
 
+        restTemplate = new RestTemplate();
+
         Supervisor[] supervisorList = restTemplate.getForObject(supervisorUrl, Supervisor[].class);
 
+        List<Supervisor> supervisorList2 = Arrays.asList(supervisorList);
+
+        Collections.sort(supervisorList2);
         ArrayList<String> processedSupervisorList = new ArrayList<String>();
 
-        for (Supervisor supervisor : supervisorList) {
-            processedSupervisorList.add(supervisor.getJurisdiction() + " - " + supervisor.getLastName() + ", " + supervisor.getFirstName());
-         }
+        for (Supervisor supervisor : supervisorList2) {
+
+            if(!Character.isDigit(supervisor.getJurisdiction().charAt(0))) {
+                processedSupervisorList.add(supervisor.getJurisdiction() + " - " + supervisor.getLastName() + ", " + supervisor.getFirstName());
+            }
+        }
+
         return processedSupervisorList;
     }
 }

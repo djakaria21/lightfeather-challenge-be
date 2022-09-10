@@ -27,6 +27,7 @@ public class SupervisorServiceTest {
 
     @Value("${supervisor.url}")
     String supervisorUrl;
+
     ArrayList<Supervisor> supervisorList;
 
     private Supervisor createSupervisor(Integer id, String phone, String jurisdiction, String identificationNumber, String firstName, String lastName) {
@@ -46,7 +47,9 @@ public class SupervisorServiceTest {
 
         supervisorList.add(createSupervisor(1, "1234567890", "CA", "123456789", "John", "Smith"));
         supervisorList.add(createSupervisor(2, "1234567890", "CA", "123456789", "Jane", "Doe"));
-
+        supervisorList.add(createSupervisor(3, "1234567890", "12", "123456789", "John", "Doe"));
+        supervisorList.add(createSupervisor(4, "1234567890", "CA", "123456789", "Jane", "Smith"));
+        supervisorList.add(createSupervisor(5, "1234567890", "TX", "123456789", "Jane", "Smith"));
     }
 
     @SneakyThrows
@@ -56,9 +59,11 @@ public class SupervisorServiceTest {
         when(restTemplate.getForObject(supervisorUrl, Supervisor[].class)).thenReturn(supervisorList.toArray(new Supervisor[0]));
 
         ArrayList<String> processedSupervisorList = supervisorService.getSupervisors();
-        assert(processedSupervisorList.size() == 2);
-        assert(processedSupervisorList.get(0).equals("CA - Smith, John"));
-        assert(processedSupervisorList.get(1).equals("CA - Doe, Jane"));
+        assert(processedSupervisorList.size() == 4);
+        assert(processedSupervisorList.get(0).equals("CA - Doe, Jane"));
+        assert(processedSupervisorList.get(1).equals("CA - Smith, Jane"));
+        assert(processedSupervisorList.get(2).equals("CA - Smith, John"));
+        assert(processedSupervisorList.get(3).equals("TX - Smith, Jane"));
     }
 
 
