@@ -13,17 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -64,110 +60,84 @@ public class SupervisorControllerTest {
 
     @SneakyThrows
     @Test
-    void postSupervisor(){
+    void postNotification(){
 
         mockMvc.perform(
-                post("/api/supervisors")
-                        .contentType(MediaType.APPLICATION_JSON).content("{firstName: \"John\", " +
-                                "lastName: \"Smith\", " +
-                                "email: \"something@gmail.com\", " +
-                                "phoneNumber: \"1-234-5678\", " +
-                                "supervisor: \"CA - Doe, Jane\"}")).andExpect(status().isOk());
+                post("/api/submit")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"firstName\": \"John\", " +
+                                "\"lastName\": \"Smith\", " +
+                                "\"email\": \"something@gmail.com\", " +
+                                "\"phoneNumber\": \"124-234-5678\", " +
+                                "\"supervisor\": \"CA - Doe, Jane\"}")).andExpect(status().isOk());
                }
 
     @SneakyThrows
     @Test
-    void postSupervisorShort(){
+    void postNotificationShort(){
 
         mockMvc.perform(
-                post("/api/supervisors")
-                        .contentType(MediaType.APPLICATION_JSON).content("{firstName: \"John\", " +
-                                "lastName: \"Smith\", " +
-                                "supervisor: \"CA - Doe, Jane\"}")).andExpect(status().isOk());
+                post("/api/submit")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"firstName\": \"John\", " +
+                                "\"lastName\": \"Smith\", " +
+                                "\"supervisor\": \"CA - Doe, Jane\"}")).andExpect(status().isOk());
     }
 
     @SneakyThrows
     @Test
-    void postSupervisorWithPhoneValidationErrors(){
+    void postNotificationWithPhoneValidationErrors(){
 
-        Exception exception = assertThrows(ValidationException.class, () ->{
         mockMvc.perform(
-                post("/api/supervisors")
-                        .contentType(MediaType.APPLICATION_JSON).content("{firstName: \"John\", " +
-                                "lastName: \"Smith\", " +
-                                "email: \"something@gmail.com\", " +
-                                "phoneNumber: \"1d234d5678\", " +
-                                "supervisor: \"CA - Doe, Jane\"}")).andExpect(status().isOk());
-        });
+                post("/api/submit")
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"firstName\": \"John\", " +
+                                "\"lastName\": \"Smith\", " +
+                                "\"email\": \"something@gmail.com\", " +
+                                "\"phoneNumber\": \"1d234d5678\", " +
+                                "\"supervisor\": \"CA - Doe, Jane\"}")).andExpect(status().is4xxClientError());
+        ;
 
-        String expectedMessage = "phoneNumber is not valid";
-        String actualMessage = exception.getMessage();
 
-        assertTrue(actualMessage.contains(expectedMessage));
 
     }
 
 
     @SneakyThrows
     @Test
-    void postSupervisorWithEmailValidationErrors(){
+    void postNotificationWithEmailValidationErrors(){
 
-        Exception exception = assertThrows(ValidationException.class, () ->{
             mockMvc.perform(
-                    post("/api/supervisors")
-                            .contentType(MediaType.APPLICATION_JSON).content("{firstName: \"John\", " +
-                                    "lastName: \"Smith\", " +
-                                    "email: \"somethingcom\", " +
-                                    "phoneNumber: \"1-234-5678\", " +
-                                    "supervisor: \"CA - Doe, Jane\"}")).andExpect(status().isOk());
-        });
+                    post("/api/submit")
+                            .contentType(MediaType.APPLICATION_JSON).content("{\"firstName\": \"John\", " +
+                                    "\"lastName\": \"Smith\", " +
+                                    "\"email\": \"somethingcom\", " +
+                                    "\"phoneNumber\": \"112-234-5678\", " +
+                                    "\"supervisor\": \"CA - Doe, Jane\"}")).andExpect(status().is4xxClientError());
+    }
 
-        String expectedMessage = "email is not valid";
-        String actualMessage = exception.getMessage();
+    @SneakyThrows
+    @Test
+    void postNotificationWithFirstNameValidationErrors(){
 
-        assertTrue(actualMessage.contains(expectedMessage));
+            mockMvc.perform(
+                    post("/api/submit")
+                            .contentType(MediaType.APPLICATION_JSON).content("{\"firstName\": \"Jo3hn\", " +
+                                    "\"lastName\": \"Smith\", " +
+                                    "\"email\": \"something@gmail.com\\" +
+                                    "\"phoneNumber\": \"112-234-5678\", " +
+                                    "\"supervisor\": \"CA - Doe, Jane\"}")).andExpect(status().is4xxClientError());
 
     }
 
     @SneakyThrows
     @Test
-    void postSupervisorWithFirstNameValidationErrors(){
+    void postNotificationWithLastNameValidationErrors(){
 
-        Exception exception = assertThrows(ValidationException.class, () ->{
             mockMvc.perform(
-                    post("/api/supervisors")
-                            .contentType(MediaType.APPLICATION_JSON).content("{firstName: \"Jo3hn\", " +
-                                    "lastName: \"Smith\", " +
-                                    "email: \"something@gmail.com\\" +
-                                    "phoneNumber: \"1-234-5678\", " +
-                                    "supervisor: \"CA - Doe, Jane\"}")).andExpect(status().isOk());
-        });
-
-        String expectedMessage = "firstName is not valid";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-
-    }
-
-    @SneakyThrows
-    @Test
-    void postSupervisorWithLasttNameValidationErrors(){
-
-        Exception exception = assertThrows(ValidationException.class, () ->{
-            mockMvc.perform(
-                    post("/api/supervisors")
-                            .contentType(MediaType.APPLICATION_JSON).content("{firstName: \"John\", " +
-                                    "lastName: \"Smi3th\", " +
-                                    "email: \"something@gmail.com\", " +
-                                    "phoneNumber: \"1-234-5678\", " +
-                                    "supervisor: \"CA - Doe, Jane\"}")).andExpect(status().isOk());
-        });
-
-        String expectedMessage = "lastName is not valid";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+                    post("/api/submit")
+                            .contentType(MediaType.APPLICATION_JSON).content("{\"firstName\": \"John\", " +
+                                    "\"lastName\": \"Smi3th\", " +
+                                    "\"email\": \"something@gmail.com\", " +
+                                    "\"phoneNumber\": \"112-234-5678\", " +
+                                    "\"supervisor\": \"CA - Doe, Jane\"}")).andExpect(status().is4xxClientError());
 
     }
 

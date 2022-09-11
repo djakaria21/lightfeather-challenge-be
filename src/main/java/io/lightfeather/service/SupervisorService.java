@@ -1,13 +1,16 @@
 package io.lightfeather.service;
 
+import io.lightfeather.entity.Notification;
 import io.lightfeather.entity.Supervisor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Validator;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,8 +45,4 @@ public class SupervisorService {
         return processedSupervisorList;
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }
