@@ -1,6 +1,3 @@
-# Overview
-This template provides a very basic Spring Boot application. This is intended to provide a bare minimum set of files that is executable, and can be compiled into a functional docker image.
-
 # Running locally with gradle
 gradle build
 gradle bootRun
@@ -26,3 +23,11 @@ docker rm -f spring-template
 
 # Running with docker-compose
 docker-compose up
+
+
+# Postman Collection
+there's a postman collection in the root directory of the project.  Import it into postman and you can test the endpoints.
+
+# Endpoints
+get api/supervisors - returns all supervisors
+post api/submit - submits a notification and prints in the console

@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "c10442dc-ac6d-4a95-8786-a1cdb06ad7eb",
+		"name": "lightfeather-be",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14680417"
+	},
+	"item": [
+		{
+			"name": "getRequest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/supervisors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"supervisors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postNotification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Smith\",\r\n    \"email\": \"something@gmail.com\",\r\n    \"phoneNumber\": \"124-234-5678\",\r\n    \"supervisor\": \"CA - Doe, Jane\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/submit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"submit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postNotificationError",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Smi3th\",\r\n    \"email\": \"something@gmail.com\",\r\n    \"phoneNumber\": \"124-234-5678\",\r\n    \"supervisor\": \"CA - Doe, Jane\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/submit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"submit"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
